@@ -5,7 +5,7 @@
 
 get_header(); ?>
 
-    <div id="main-content" class="main-content">
+    <div id="main-content" class="main-content container">
 
         <?php
         if ( is_front_page() ) {

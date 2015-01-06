@@ -5,7 +5,7 @@
 
 get_header(); ?>
 
-	<div id="main-content" class="main-content">
+	<div id="main-content" class="container main-content">
 		<div id="primary" class="content-area">
 			<div id="content" class="site-content" role="main">
 
