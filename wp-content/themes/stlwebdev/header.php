@@ -21,7 +21,7 @@
     <!--[if lt IE 9]>
     <script src="<?php echo get_template_directory_uri(); ?>/bootstrap-3.2.0/js/html5.js"></script>
     <![endif]-->
-	<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/bootstrap-3.2.0/dist/css/bootstrap.min.css"">
+	<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/bootstrap-3.2.0/dist/css/bootstrap.css"">
 	<?php wp_head(); ?>
 </head>
 <body>
