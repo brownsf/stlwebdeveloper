@@ -27,7 +27,7 @@
 	<?php wp_head(); ?>
 </head>
 <body>
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+<header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
 	<div class="container">
 		<div class="navbar-header">
 			<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
@@ -38,7 +38,7 @@
 			</button>
 			<a href="/" class="navbar-brand">St. Louis Web Developer</a>
 		</div>
-		<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+		<nav class="collapse navbar-collapse" role="navigation">
 				<?php wp_nav_menu( array( 'theme_location' => 'header-menu','menu_class'=>'nav navbar-nav','container'=>false ) ); ?>
 
 			<ul class="nav navbar-nav navbar-right">

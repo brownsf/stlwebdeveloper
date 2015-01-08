@@ -1,6 +1,6 @@
 /*!
  * Bootstrap v3.2.0 (http://getbootstrap.com)
- * Copyright 2011-2014 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
@@ -4114,9 +4114,18 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #333;
   background-color: transparent;
 }
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.navbar-default .navbar-nav > .current-menu-item a,
+.navbar-default .navbar-nav > .current-menu-item a:hover,
+.navbar-default .navbar-nav > .current-menu-item a:focus {
+  color: #555;
+  background-color: #e7e7e7;
+}
+.navbar-default .navbar-nav > .current-menu-item a,
+.navbar-default .navbar-nav .active > a,
+.navbar-default .navbar-nav > .current-menu-item a:hover,
+.navbar-default .navbar-nav .active > a:hover,
+.navbar-default .navbar-nav > .current-menu-item a:focus,
+.navbar-default .navbar-nav .active > a:focus {
   color: #555;
   background-color: #e7e7e7;
 }

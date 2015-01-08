@@ -414,7 +414,15 @@
         background-color: @navbar-default-link-hover-bg;
       }
     }
-    > .active > a {
+    > .current-menu-item a {
+      &,
+      &:hover,
+      &:focus {
+        color: @navbar-default-link-active-color;
+        background-color: @navbar-default-link-active-bg;
+      }
+    }
+    > .current-menu-item a, .active > a {
       &,
       &:hover,
       &:focus {
