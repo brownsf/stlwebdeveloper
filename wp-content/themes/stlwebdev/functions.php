@@ -16,13 +16,13 @@ add_action('init', 'register_my_menu');
 /**
  * Proper way to enqueue scripts and styles
  */
-function theme_name_scripts()
+function stlweb_scripts()
 {
-    wp_enqueue_style('style-name', get_stylesheet_uri());
+    wp_enqueue_style('style-name', get_template_directory_uri() . '/css/app.css');
 
 }
 
-add_action('wp_enqueue_scripts', 'theme_name_scripts');
+add_action('wp_enqueue_scripts', 'stlweb_scripts');
 
 add_action('init', 'create_service_post_type');
 function create_service_post_type()
@@ -109,14 +109,58 @@ function register_ewsettings()
 function get_weather()
 {
     if (false === ($value = get_transient('stlweb_weather_data'))) {
-       $cityState= get_option('stlweb_weather_address');
+        $cityState = get_option('stlweb_weather_address');
         $loc = explode(',', $cityState);
-        $state=trim($loc[1]);
-        $city=str_replace(' ','_',trim($loc[0]));
-       $url =  "http://api.wunderground.com/api/0aa2d3ef365a9b92/forecast/q/$state/$city.json";
+        $state = trim($loc[1]);
+        $city = str_replace(' ', '_', trim($loc[0]));
+        $url = "http://api.wunderground.com/api/0aa2d3ef365a9b92/forecast/q/$state/$city.json";
         $value = wp_remote_get($url);
-        set_transient('stlweb_weather',$value,60 * 60 * 24);
+        set_transient('stlweb_weather', $value, 60 * 60 * 6);
     }
 
     return json_decode($value['body'])->forecast;
+}
+
+add_action('post_submitbox_misc_actions', 'publish_in_frontpage');
+function stlweb_publish_in_frontpage()
+{
+    global $post;
+    $value = get_post_meta($post->ID, '_publish_in_frontpage', true);
+?>
+<div class="misc-pub-section misc-pub-section-last">
+         <span id="timestamp">'
+        <label>
+            <input type="checkbox"<?php echo(!empty($value) ? ' checked="checked" ' : null) ?> value="1"
+                   name="publish_in_frontpage"/> Publish to frontpage
+        </label>
+        </span>
+</div>;
+<?php
+}
+
+add_action( 'save_post', 'my_save_postdata');
+function stlweb_save_postdata($postid)
+{
+    /* check if this is an autosave */
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return false;
+
+    /* check if the user can edit this page */
+    if ( !current_user_can( 'edit_page', $postid ) ) return false;
+
+    /* check if there's a post id and check if this is a post */
+    /* make sure this is the same post type as above */
+    if(empty($postid) || $_POST['post_type'] != 'post' ) return false;
+
+    /* if you are going to use text fields, then you should change the part below */
+    /* use add_post_meta, update_post_meta and delete_post_meta, to control the stored value */
+
+    /* check if the custom field is submitted (checkboxes that aren't marked, aren't submitted) */
+    if(isset($_POST['my_featured_post_field'])){
+        /* store the value in the database */
+        add_post_meta($postid, 'my_featured_post_field', 1, true );
+    }
+    else{
+        /* not marked? delete the value in the database */
+        delete_post_meta($postid, 'my_featured_post_field');
+    }
 }
