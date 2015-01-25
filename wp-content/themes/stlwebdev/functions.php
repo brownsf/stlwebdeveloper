@@ -6,32 +6,117 @@
  * Time: 9:26 PM
  */
 
-function register_my_menu() {
-	register_nav_menu('header-menu',__( 'Header Menu' ));
+function register_my_menu()
+{
+    register_nav_menu('header-menu', __('Header Menu'));
 }
-add_action( 'init', 'register_my_menu' );
+
+add_action('init', 'register_my_menu');
 
 /**
  * Proper way to enqueue scripts and styles
  */
-function theme_name_scripts() {
-    wp_enqueue_style( 'style-name', get_stylesheet_uri() );
+function theme_name_scripts()
+{
+    wp_enqueue_style('style-name', get_stylesheet_uri());
 
 }
 
-add_action( 'wp_enqueue_scripts', 'theme_name_scripts' );
+add_action('wp_enqueue_scripts', 'theme_name_scripts');
 
-add_action( 'init', 'create_service_post_type' );
-function create_service_post_type() {
-    register_post_type( 'my_services',
+add_action('init', 'create_service_post_type');
+function create_service_post_type()
+{
+    register_post_type('my_services',
         array(
             'labels' => array(
-                'name' => __( 'Services' ),
-                'singular_name' => __( 'Service' )
+                'name' => __('Services'),
+                'singular_name' => __('Service')
             ),
             'public' => true,
             'has_archive' => true,
-            'supports' => array('page-attributes','editor','title')
+            'supports' => array('page-attributes', 'editor', 'title')
         )
     );
+}
+
+function setup_theme_admin_menus()
+{
+    add_submenu_page('themes.php',
+        'Front Page Elements', 'Front Page', 'manage_options',
+        'front-page-elements', 'theme_front_page_settings');
+}
+
+// This tells WordPress to call the function named "setup_theme_admin_menus"
+// when it's time to create the menu pages.
+add_action("admin_menu", "setup_theme_admin_menus");
+
+function theme_front_page_settings()
+{ ?>
+
+    <div class="wrap">
+        <h2><?php _e('Theme Settings', 'stlweb'); ?></h2>
+
+        <form method="post" action="options.php">
+
+            <?php if (isset($_GET['settings-updated'])) { ?>
+                <div class="updated">
+                    <p><?php _e('Settings updated successfully'); ?></p>
+                </div>
+            <?php } ?>
+
+            <table class="form-table">
+                <tr>
+                    <td colspan="2"><h3><?php _e('Google Analytics Code', 'stlweb'); ?></h3></td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row"><?php _e('Local City', 'stlweb'); ?></th>
+                    <td>
+                        <textarea
+                            name="stlweb_weather_address"><?php echo get_option('stlweb_weather_address'); ?></textarea>
+
+                        <p class="description"><?php _e('Your location for homepage weather. (City, 2 Letter State)', 'stlweb'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Twitter Username', 'stlweb'); ?></th>
+                    <td>
+                        <textarea name="stlweb_twitter_name"><?php echo get_option('stlweb_twitter_name'); ?></textarea>
+
+                        <p class="description"><?php _e('Twitter for home.', 'stlweb'); ?></p>
+                    </td>
+                </tr>
+
+                <?php settings_fields('stlweb-settings-general'); ?>
+                <?php do_settings_sections('stlweb-settings-general'); ?>
+            </table>
+
+            <?php submit_button(); ?>
+        </form>
+    </div>
+<?php }
+
+/**
+ * Step 2: Create settings fields.
+ */
+add_action('admin_init', 'register_ewsettings');
+function register_ewsettings()
+{
+    register_setting('stlweb-settings-general', 'stlweb_weather_address');
+}
+
+function get_weather()
+{
+    if (false === ($value = get_transient('stlweb_weather_data'))) {
+       $cityState= get_option('stlweb_weather_address');
+        $loc = explode(',', $cityState);
+        $state=trim($loc[1]);
+        $city=str_replace(' ','_',trim($loc[0]));
+       $url =  "http://api.wunderground.com/api/0aa2d3ef365a9b92/forecast/q/$state/$city.json";
+        $value = wp_remote_get($url);
+        set_transient('stlweb_weather',$value,60 * 60 * 24);
+    }
+
+    return json_decode($value['body'])->forecast;
 }

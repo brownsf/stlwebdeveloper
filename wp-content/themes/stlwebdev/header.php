@@ -45,6 +45,24 @@
 
 			</ul>
 		</nav>
+		<div>
+			<?php $weather=get_weather();
+			$txt=$weather->txt_forecast->forecastday;
+			$forecast=$weather->simpleforecast->forecastday;
+			for($i=0;$i<3;$i++){
+			?>
+			<div class="pull-right">
+				<p><?php echo $txt[$i]->title?></p>
+				<img src="<?php echo $txt[$i]->icon_url?>" />
+				<p><span class="high"><?php echo $forecast[$i]->high->fahrenheit?></span>
+					<span class="low"><?php echo $forecast[$i]->low->fahrenheit?></span>
+				</p>
+
+			</div>
+
+			<?php }
+?>
+		</div>
 	</div>
 </header>
 <div class="bs-docs-header" id="content">
