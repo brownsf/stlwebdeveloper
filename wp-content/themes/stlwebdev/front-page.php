@@ -30,20 +30,18 @@ get_header(); ?>
     </section>
     <section id="home" data-speed="4" data-type="background">
         <div class="container-fluid">
-            <h2 class="oreo">Areas of Expertise</h3>
+            <h2 class="oreo">Areas of Expertise</h2>
                 <!-- #main-content -->
                 <div id="expertise" class="row-fluid">
 
 
                     <?php
-                    $front_query = new WP_Query('posts_per_page=2');
+                    $front_query = new WP_Query('post_type=my_services&posts_per_page=3');
                     if ($front_query->have_posts()) {
                         while ($front_query->have_posts()) {
                             $front_query->the_post();
                             echo '<div class="col-md-4"><div class="well"><a href="' . get_the_permalink() . '">' . get_the_title() . '</a><p>' . get_the_excerpt() . '</p></div></div>';
                         }
-
-
                     } else {
                         echo '<p class="glyphicon-warning-sign">Oops no content yet. </p>';
                     }
