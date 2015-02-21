@@ -6,6 +6,19 @@
  * Time: 9:26 PM
  */
 
+function new_excerpt_length() {
+    return 50;
+}
+add_filter('excerpt_length', 'new_excerpt_length');
+
+// Changing excerpt more
+function new_excerpt_more($more) {
+    global $post;
+    return '<a class="moretag" href="'. get_permalink($post->ID) . '"> Read More</a>';
+}
+add_filter('excerpt_more', 'new_excerpt_more');
+
+
 function register_my_menu()
 {
     register_nav_menu('header-menu', __('Header Menu'));
@@ -121,7 +134,7 @@ function get_weather()
     return json_decode($value['body'])->forecast;
 }
 
-add_action('post_submitbox_misc_actions', 'publish_in_frontpage');
+add_action('post_submitbox_misc_actions', 'stlweb_publish_in_frontpage');
 function stlweb_publish_in_frontpage()
 {
     global $post;
@@ -138,7 +151,7 @@ function stlweb_publish_in_frontpage()
 <?php
 }
 
-add_action( 'save_post', 'my_save_postdata');
+add_action( 'save_post', 'stlweb_save_postdata');
 function stlweb_save_postdata($postid)
 {
     /* check if this is an autosave */
