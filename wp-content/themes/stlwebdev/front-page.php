@@ -4,21 +4,20 @@
  */
 
 get_header(); ?>
-    <section id="intro" data-speed="6" data-type="background">
+    <section id="intro" data-speed="3" data-type="background">
         <div class="bs-docs-header">
             <div class="container">
                 <div class="page-header">
                     <h1>Stl Web Developer
                         <small>Freelance web development based in St. Louis, Mo</small>
                     </h1>
-                    <div id="content" class="site-content" role="main">
+                    <div id="content" class="site-content container" role="main">
                         <div class="row">
-                            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                            <article id="post-<?php the_ID(); ?>" <?php post_class('mid-col-10'); ?>>
                                 <?php
-                                the_content();
-                                // If no content, include the "No posts found" template.
-                                //get_template_part( 'content', 'none' );
-
+                                $content = $post->post_content;
+                                $content = apply_filters('the_content', $content);
+                                echo $content;
                                 ?>
 
                         </div>
@@ -28,7 +27,7 @@ get_header(); ?>
             </div>
         </div>
     </section>
-    <section id="home" data-speed="4" data-type="background">
+    <section id="home" data-speed="6" data-type="background">
         <div class="container-fluid">
             <h2 class="oreo">Areas of Expertise</h2>
                 <!-- #main-content -->

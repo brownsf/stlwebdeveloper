@@ -56,15 +56,15 @@ function create_service_post_type()
 function setup_theme_admin_menus()
 {
     add_submenu_page('themes.php',
-        'Front Page Elements', 'Front Page', 'manage_options',
-        'front-page-elements', 'theme_front_page_settings');
+        'Page Elements', 'Edit Page', 'manage_options',
+        'page-elements', 'theme_page_settings');
 }
 
 // This tells WordPress to call the function named "setup_theme_admin_menus"
 // when it's time to create the menu pages.
 add_action("admin_menu", "setup_theme_admin_menus");
 
-function theme_front_page_settings()
+function theme_page_settings()
 { ?>
 
     <div class="wrap">
@@ -93,11 +93,11 @@ function theme_front_page_settings()
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Twitter Username', 'stlweb'); ?></th>
+                    <th scope="row"><?php _e('Footer Content', 'stlweb'); ?></th>
                     <td>
-                        <textarea name="stlweb_twitter_name"><?php echo get_option('stlweb_twitter_name'); ?></textarea>
+                        <textarea name="stlweb_footer_content"><?php echo get_option('stlweb_footer_content'); ?></textarea>
 
-                        <p class="description"><?php _e('Twitter for home.', 'stlweb'); ?></p>
+                        <p class="description"><?php _e('The content for the contact us area.', 'stlweb'); ?></p>
                     </td>
                 </tr>
 
@@ -110,6 +110,7 @@ function theme_front_page_settings()
     </div>
 <?php }
 
+
 /**
  * Step 2: Create settings fields.
  */
@@ -117,6 +118,7 @@ add_action('admin_init', 'register_ewsettings');
 function register_ewsettings()
 {
     register_setting('stlweb-settings-general', 'stlweb_weather_address');
+    register_setting('stlweb-settings-general', 'stlweb_footer_content');
 }
 
 function get_weather()
